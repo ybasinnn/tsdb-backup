@@ -1,0 +1,42 @@
+---
+- name: Creating tsbackup user group
+  group:
+    name: "{{ backup_user }}"
+    state: present
+    gid: "{{ backup_user_gid }}"
+  become: true
+
+- name: Creating tsbackup user
+  user:
+    name: "{{ backup_user }}"
+    create_home: "{{ backup_user_create_home }}"
+    home: "{{ backup_user_homedir }}"
+    shell: "{{ backup_user_shell }}"
+    comment: "{{ backup_user_comment }}"
+    group: "{{ backup_user }}"
+    groups: "{{ backup_user_groups }}"
+    append: true
+    uid: "{{ backup_user_uid }}"
+  become: true
+
+- name: Sudoers configs for tsbackup user
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  become: true
+  loop: "{{ backup_user_sudoers_configs }}"
+  when: backup_user_sudoers_configs is defined
+
+## If backup_user_authorized_keys_enabled: True then deploy the authorized_keys- for env
+## such as test, for CI/CD.
+- name: Setup the authorized_keys if backup_user_authorized_keys_enabled is True
+  authorized_key:
+    user: "{{ backup_user }}"
+    state: present
+    key: "{{ backup_user_authorized_keys_content }}"
+    path: "{{ backup_user_homedir }}/.ssh/authorized_keys"
+  become: true
+  when: backup_user_authorized_keys_enabled

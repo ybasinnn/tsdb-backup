@@ -1,0 +1,6 @@
+- name: Backup Monitoring Stack Playbook
+  hosts: all
+  become: true
+  roles:
+    - backup_monitoring_data  
+

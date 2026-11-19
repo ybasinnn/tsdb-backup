@@ -1,0 +1,11 @@
+# Managed by Ansible (backup_monitoring_data role). Do not edit by hand.
+# Lets the tsbackup user run and inspect the backup service and timer without a password.
+Cmnd_Alias TS_BACKUP = /usr/bin/systemctl start ts-backup.service, \
+                       /usr/bin/systemctl stop ts-backup.service, \
+                       /usr/bin/systemctl status ts-backup.service, \
+                       /usr/bin/systemctl status ts-backup.timer, \
+                       /usr/bin/systemctl list-timers ts-backup.timer, \
+                       /usr/bin/journalctl -u ts-backup.service, \
+                       /usr/bin/journalctl -u ts-backup.service -f
+
+tsbackup ALL=(root) NOPASSWD: TS_BACKUP

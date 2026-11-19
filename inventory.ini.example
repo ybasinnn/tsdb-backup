@@ -1,0 +1,2 @@
+[poc]
+<INSTANCE_ID> ansible_user=ubuntu ansible_ssh_private_key_file=/path/to/tsdb-backup/terraform-infra/modules/ec2/mon_backup.pem ansible_ssh_common_args='-o ProxyCommand="aws ec2-instance-connect open-tunnel --instance-id %h --region eu-west-1"'

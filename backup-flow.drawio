@@ -1,0 +1,129 @@
+<mxfile>
+  <diagram name="backup-flow">
+    <mxGraphModel dx="1600" dy="900" grid="0" gridSize="10" page="0" pageScale="1" background="#FFFFFF">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Groups -->
+        <mxCell id="cloud" value="AWS Cloud" style="points=[];shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_aws_cloud_alt;strokeColor=#232F3E;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#232F3E;dashed=0;fontStyle=1;fontSize=14;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1560" height="600" as="geometry"/>
+        </mxCell>
+        <mxCell id="region" value="Region eu-west-1" style="points=[];shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_region;strokeColor=#00A4A6;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#147EBA;dashed=1;fontStyle=1;fontSize=14;html=1;" vertex="1" parent="1">
+          <mxGeometry x="65" y="85" width="1510" height="530" as="geometry"/>
+        </mxCell>
+        <mxCell id="ec2" value="EC2 monitor host &lt;span style=&quot;font-weight:normal&quot;&gt;(private subnet, no public IP)&lt;/span&gt;" style="points=[];shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_ec2_instance_contents;strokeColor=#D86613;fillColor=#FDF4EC;verticalAlign=top;align=left;spacingLeft=30;fontColor=#D86613;dashed=0;fontStyle=1;fontSize=14;html=1;" vertex="1" parent="1">
+          <mxGeometry x="95" y="135" width="1010" height="450" as="geometry"/>
+        </mxCell>
+
+        <!-- Icons inside the EC2 host -->
+        <mxCell id="timer" value="&lt;b&gt;systemd timer&lt;/b&gt;&lt;br&gt;once a month&lt;br&gt;+ up to 1 h random delay" style="sketch=0;outlineConnect=0;fontColor=#232F3E;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=13;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.event_time_based;" vertex="1" parent="1">
+          <mxGeometry x="150" y="215" width="64" height="64" as="geometry"/>
+        </mxCell>
+        <mxCell id="script" value="&lt;b&gt;ts-backup.sh&lt;/b&gt;&lt;br&gt;runs as user &lt;font face=&quot;monospace&quot;&gt;tsbackup&lt;/font&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;fillColor=#232F3E;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=13;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.gear;" vertex="1" parent="1">
+          <mxGeometry x="385" y="215" width="64" height="64" as="geometry"/>
+        </mxCell>
+        <mxCell id="containers" value="&lt;b&gt;Grafana + Uptime Kuma&lt;/b&gt;&lt;br&gt;Docker Compose stacks&lt;br&gt;&lt;font face=&quot;monospace&quot;&gt;/opt/*compose&lt;/font&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=13;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.container_1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="215" width="64" height="64" as="geometry"/>
+        </mxCell>
+        <mxCell id="staging" value="&lt;b&gt;Staging folder&lt;/b&gt;&lt;br&gt;&lt;font face=&quot;monospace&quot;&gt;/var/ts-backup/staging&lt;/font&gt;&lt;br&gt;&lt;font face=&quot;monospace&quot;&gt;.tar.gz&lt;/font&gt; + &lt;font face=&quot;monospace&quot;&gt;.sha256&lt;/font&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=13;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.archive;" vertex="1" parent="1">
+          <mxGeometry x="640" y="410" width="64" height="64" as="geometry"/>
+        </mxCell>
+        <mxCell id="logs" value="&lt;b&gt;Log file&lt;/b&gt;&lt;br&gt;&lt;font face=&quot;monospace&quot;&gt;/var/log/ts-backup/&amp;lt;host&amp;gt;/backup.log&lt;/font&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;fillColor=#545B64;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=13;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.documents;" vertex="1" parent="1">
+          <mxGeometry x="385" y="410" width="64" height="64" as="geometry"/>
+        </mxCell>
+        <mxCell id="role" value="&lt;b&gt;IAM instance role&lt;/b&gt;&lt;br&gt;allows writes to the&lt;br&gt;backup bucket only" style="sketch=0;outlineConnect=0;fontColor=#232F3E;fillColor=#DD344C;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=13;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.role;" vertex="1" parent="1">
+          <mxGeometry x="935" y="482" width="70" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- Outside the host -->
+        <mxCell id="endpoint" value="&lt;b&gt;S3 gateway&lt;br&gt;endpoint&lt;/b&gt;" style="sketch=0;outlineConnect=0;fontColor=#232F3E;fillColor=#8C4FFF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=13;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.endpoints;" vertex="1" parent="1">
+          <mxGeometry x="1175" y="410" width="64" height="64" as="geometry"/>
+        </mxCell>
+        <mxCell id="s3" value="&lt;b&gt;Amazon S3&lt;/b&gt;&lt;br&gt;&lt;font face=&quot;monospace&quot;&gt;tsdb-backup-da&lt;/font&gt;&lt;br&gt;&lt;font face=&quot;monospace&quot;&gt;backups/&amp;lt;host&amp;gt;/&lt;/font&gt;&lt;br&gt;Glacier Deep Archive" style="sketch=0;points=[];outlineConnect=0;fontColor=#232F3E;gradientColor=#60A337;gradientDirection=north;fillColor=#277116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=13;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" vertex="1" parent="1">
+          <mxGeometry x="1405" y="403" width="78" height="78" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrows -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1" source="timer" target="script">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e2" style="html=1;endArrow=block;endFill=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="455" y="235" as="sourcePoint"/>
+            <mxPoint x="634" y="235" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" style="html=1;endArrow=block;endFill=1;strokeColor=#232F3E;strokeWidth=2;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="634" y="262" as="sourcePoint"/>
+            <mxPoint x="455" y="262" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e3" style="html=1;endArrow=block;endFill=1;strokeColor=#232F3E;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="672" y="335" as="sourcePoint"/>
+            <mxPoint x="672" y="404" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" style="html=1;endArrow=block;endFill=1;strokeColor=#ED7100;strokeWidth=3;" edge="1" parent="1" source="staging" target="endpoint">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e5b" style="html=1;endArrow=block;endFill=1;strokeColor=#ED7100;strokeWidth=3;" edge="1" parent="1" source="endpoint" target="s3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="elog" style="html=1;endArrow=open;endFill=0;strokeColor=#879196;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="417" y="322" as="sourcePoint"/>
+            <mxPoint x="417" y="404" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Arrow labels -->
+        <mxCell id="l1" value="Start" style="text;html=1;fontSize=13;fontColor=#232F3E;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="270" y="222" width="60" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="l2" value="Stop containers" style="text;html=1;fontSize=13;fontColor=#232F3E;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="495" y="212" width="120" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="l4" value="Start them again" style="text;html=1;fontSize=13;fontColor=#232F3E;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="495" y="266" width="120" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="l3" value="Pack data + checksum" style="text;html=1;fontSize=13;fontColor=#232F3E;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="720" y="360" width="150" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="l5" value="&lt;b&gt;rclone upload (HTTPS)&lt;/b&gt;" style="text;html=1;fontSize=13;fontColor=#D45B07;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="790" y="414" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="llog" value="writes" style="text;html=1;fontSize=12;fontColor=#879196;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="425" y="353" width="50" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="lclean" value="Copies older than 3 days&lt;br&gt;are deleted" style="text;html=1;fontSize=12;fontColor=#545B64;align=center;verticalAlign=top;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="597" y="527" width="150" height="34" as="geometry"/>
+        </mxCell>
+
+        <!-- Step badges -->
+        <mxCell id="b1" value="1" style="ellipse;html=1;fillColor=#232F3E;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="236" y="222" width="26" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="b2" value="2" style="ellipse;html=1;fillColor=#232F3E;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="467" y="208" width="26" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="b3" value="3" style="ellipse;html=1;fillColor=#232F3E;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="690" y="357" width="26" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="b4" value="4" style="ellipse;html=1;fillColor=#232F3E;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="467" y="263" width="26" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="b5" value="5" style="ellipse;html=1;fillColor=#ED7100;strokeColor=none;fontColor=#FFFFFF;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="760" y="411" width="26" height="26" as="geometry"/>
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="legend" value="&lt;b&gt;1&lt;/b&gt; Once a month the timer starts the script.&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;b&gt;2&lt;/b&gt; It stops the containers so the data files don't change.&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;b&gt;3&lt;/b&gt; It packs each folder into a &lt;font face=&quot;monospace&quot;&gt;.tar.gz&lt;/font&gt; with a checksum.&lt;br&gt;&lt;b&gt;4&lt;/b&gt; It starts the containers again.&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;b&gt;5&lt;/b&gt; rclone uploads the files to S3 Deep Archive through the gateway endpoint, using the instance role. Traffic never leaves AWS." style="text;html=1;fontSize=14;fontColor=#232F3E;align=left;verticalAlign=top;spacing=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="660" width="1560" height="50" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

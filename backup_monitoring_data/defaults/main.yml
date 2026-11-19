@@ -1,0 +1,30 @@
+backup_user: tsbackup
+backup_user_comment: "TS backup service user"
+backup_user_uid: 2001
+backup_user_gid: 2001
+backup_user_homedir: "/opt/tsbackup"
+# additional groups for the user; docker is required to stop/start the compose stacks
+backup_user_groups: [docker]
+backup_user_shell: /bin/bash
+backup_user_create_home: true
+backup_user_authorized_keys_enabled: false
+backup_user_sudoers_configs:
+  - src: etc/sudoers.d/user_tsbackup
+    dest: /etc/sudoers.d/user_tsbackup
+    owner: root
+    group: root
+    mode: "0440"
+
+backup_script_src: ts-backup.sh.j2
+backup_script_dest: /opt/tsdb-backup
+backup_dir: /opt/tsdb-backup
+backup_staging_dir: /var/ts-backup/staging
+backup_log_dir: /var/log/ts-backup
+rclone_config_dir: /etc/rclone
+rclone_remote: "s3-deep-archive"
+rclone_s3_bucket: "tsdb-backup-da" # Name of the s3 bucket
+
+ts_backup_description: "TS Backup Service"
+ts_backup_script: "/opt/tsdb-backup/ts-backup.sh"
+ts_backup_user: "{{ backup_user }}"
+ts_backup_schedule: "monthly"

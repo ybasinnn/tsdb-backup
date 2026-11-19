@@ -1,0 +1,22 @@
+# We don't use defaults here because mostly this role is called as child from other roles.
+# When the same variable is declared  in parent and cihld role, child role takes precedence
+# This is confusing, that's why we don't use defaults here
+
+#backup_user: tsbackup
+#backup_user_comment: "TS backup service user"
+#backup_user_uid: 2001
+#backup_user_gid: 2001
+#backup_user_homedir: "/opt/tsbackup"
+# additional groups for the user, such as docker, sudo, etc.
+#backup_user_groups: []
+#backup_user_shell: /bin/bash
+#backup_user_create_home: true
+#backup_user_authorized_keys_enabled: false
+#backup_user_authorized_keys_content: "{{ lookup('file', 'authorized_keys') }}"
+# example
+#backup_user_sudoers_configs:
+#  - src: etc/sudoers.d/user_tsbackup
+#    dest: /etc/sudoers.d/user_tsbackup
+#    owner: root
+#    group: root
+#    mode: 0440
