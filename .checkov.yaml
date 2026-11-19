@@ -1,0 +1,27 @@
+# Checkov settings, used by .github/workflows/security-scan.yml.
+# Run locally with: checkov --config-file .checkov.yaml
+directory:
+  - .
+framework:
+  - terraform
+  - secrets
+  - github_actions
+compact: true
+quiet: true
+
+# Checks skipped on purpose. This is a small personal setup, so controls that
+# mainly add cost or only matter at company scale are accepted risks.
+# Remove a line here if you later want that check enforced.
+skip-check:
+  # EC2
+  - CKV_AWS_126   # Detailed monitoring: paid CloudWatch metrics, basic monitoring is enough here
+  - CKV_AWS_382   # Egress to 0.0.0.0/0: instance needs apt (HTTP/HTTPS), Docker Hub and S3; it has no inbound exposure
+  # VPC
+  - CKV2_AWS_11   # VPC flow logs: extra CloudWatch/S3 cost for a single test instance
+  - CKV_AWS_394   # Pin availability zone ID: first available AZ is fine for a disposable test VPC
+  # S3 backup bucket
+  - CKV_AWS_18    # Access logging: needs a second bucket; low value for a private backup bucket
+  - CKV_AWS_21    # Versioning: archives are write-once with unique timestamped names
+  - CKV_AWS_144   # Cross-region replication: doubles Deep Archive storage cost
+  - CKV_AWS_145   # KMS encryption: SSE-S3 (AES256) is enabled; KMS adds per-request cost
+  - CKV2_AWS_62   # Event notifications: nothing consumes them

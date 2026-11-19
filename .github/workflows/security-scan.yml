@@ -1,0 +1,45 @@
+name: Security scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  # Weekly run, so new Checkov rules are applied even when the code doesn't change.
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  checkov:
+    name: Checkov (Terraform, secrets, workflows)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Checkov
+        run: pip install "checkov>=3,<4"
+
+      # Settings, and the checks deliberately skipped (with reasons), are in .checkov.yaml.
+      - name: Scan Terraform, secrets and GitHub Actions
+        run: checkov --config-file .checkov.yaml
+
+  gitleaks:
+    name: Gitleaks (secrets in every file and all history)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history, so a key committed and later deleted is still found
+
+      # Runs the official image directly: no third-party action and no license key needed.
+      - name: Scan for secrets
+        run: |
+          docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.24.0 \
+            git /repo --no-banner --redact --verbose

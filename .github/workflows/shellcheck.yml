@@ -1,0 +1,30 @@
+name: ShellCheck
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  shellcheck:
+    name: Lint shell scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # ShellCheck is preinstalled on GitHub's Ubuntu runners.
+      - name: Show ShellCheck version
+        run: shellcheck --version
+
+      # Picks up every committed *.sh file, so new scripts are checked automatically.
+      - name: Lint *.sh scripts
+        run: git ls-files -z '*.sh' | xargs -0 shellcheck --severity=warning
+
+      # backup.conf has no .sh extension but is sourced by ts-backup.sh.
+      # SC2034 (variable appears unused) is expected: the variables are used by the script.
+      - name: Lint backup.conf
+        run: shellcheck --shell=bash --severity=warning --exclude=SC2034 backup_monitoring_data/files/backup.conf
